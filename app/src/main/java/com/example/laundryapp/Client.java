@@ -29,7 +29,7 @@ public class Client extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
 
         userPhone = getIntent().getStringExtra("USER_PHONE");
-        userName = getIntent().getStringExtra("USER_Name");
+        userName = getIntent().getStringExtra("USER_NAME");
         if (userPhone != null) {
             tvWelcome.setText("Hello, " + userName);
         }
@@ -53,8 +53,12 @@ public class Client extends AppCompatActivity {
             showPriceListDialog();
         });
 
+
         cardFeedback.setOnClickListener(v -> {
-            Toast.makeText(this, "Feedback Feature Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Client.this, FeedbackActivity.class);
+            intent.putExtra("USER_PHONE", userPhone);
+            intent.putExtra("USER_NAME", userName);
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> {

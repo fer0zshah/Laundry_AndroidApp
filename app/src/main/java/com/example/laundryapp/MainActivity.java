@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
 
                         if ("Admin".equals(role)) {
-                            // If Database says Admin
+
                             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                             startActivity(intent);
                         } else {
-                            // If Regular Client
                             Intent intent = new Intent(MainActivity.this, Client.class);
                             // We pass the phone number so we know who is logged in!
                             intent.putExtra("USER_PHONE", inputId);
