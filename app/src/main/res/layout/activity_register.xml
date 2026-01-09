@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="#f4f4f4">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Account"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#EFB506"
+        android:layout_marginBottom="30dp"/>
+
+    <EditText
+        android:id="@+id/etRegName"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="Full Name"
+        android:inputType="textPersonName"
+        android:background="@android:drawable/edit_text"
+        android:padding="15dp"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etRegPhone"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="Phone Number"
+        android:inputType="text"
+        android:background="@android:drawable/edit_text"
+        android:padding="15dp"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etRegAddress"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginBottom="12dp"
+        android:background="@android:drawable/edit_text"
+        android:hint="Address"
+        android:inputType="textPostalAddress"
+        android:padding="15dp" />
+
+    <EditText
+        android:id="@+id/etRegPassword"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:background="@android:drawable/edit_text"
+        android:padding="15dp"
+        android:layout_marginBottom="25dp"/>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="REGISTER"
+        android:textSize="18sp"
+        android:backgroundTint="#E4B608"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:id="@+id/tvLoginLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to Login"
+        android:textColor="#555555"
+        android:textSize="16sp"/>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "421784298672",
+    "project_id": "laundryapp-2cfe2",
+    "storage_bucket": "laundryapp-2cfe2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421784298672:android:9fb15980b2c33ddc828775",
+        "android_client_info": {
+          "package_name": "com.example.laundryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmUCWfbxg_DDwaZWlmaS_olUYlvqDOv6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
