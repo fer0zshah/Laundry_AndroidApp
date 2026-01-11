@@ -51,15 +51,15 @@
                 android:id="@+id/rbWashIron"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wash &amp; Iron"
+                android:layout_marginEnd="15dp"
                 android:checked="true"
-                android:layout_marginEnd="15dp"/>
+                android:text="Wash Only " />
 
             <RadioButton
                 android:id="@+id/rbDryClean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dry Clean"/>
+                android:text="Wash &amp; Iron" />
         </RadioGroup>
 
         <TextView

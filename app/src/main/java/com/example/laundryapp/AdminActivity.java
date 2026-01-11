@@ -1,5 +1,6 @@
 package com.example.laundryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,7 +27,6 @@ public class AdminActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
 
-    // Adapter and List variables
     OrderAdapter adapter;
     ArrayList<OrderHelper> orderList;
     DatabaseReference databaseOrders;
@@ -34,12 +34,12 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_admin);
 
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
+
 
         toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
@@ -47,10 +47,20 @@ public class AdminActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_active) {
-                Toast.makeText(this, "Showing Active Orders", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_revenue) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+            else if (id == R.id.nav_pickup) {
+                Intent intent = new Intent(AdminActivity.this, PickupRequest.class);
+                startActivity(intent);
+            }
+            else if (id == R.id.nav_revenue) {
                 Toast.makeText(this, "Revenue Clicked", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_logout) {
+            }
+            else if (id == R.id.nav_feedback) {
+                // You can link FeedbackActivity here later
+                Toast.makeText(this, "Feedback Clicked", Toast.LENGTH_SHORT).show();
+            }
+            else if (id == R.id.nav_logout) {
                 finish();
             }
 
@@ -66,16 +76,21 @@ public class AdminActivity extends AppCompatActivity {
         adapter = new OrderAdapter(this, orderList);
         recyclerView.setAdapter(adapter);
 
-
         databaseOrders = FirebaseDatabase.getInstance().getReference("orders");
 
         databaseOrders.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 orderList.clear();
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    OrderHelper order = data.getValue(OrderHelper.class);
-                    orderList.add(order);
+
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
+                        OrderHelper order = orderSnapshot.getValue(OrderHelper.class);
+
+                        if (order != null && "Active".equals(order.getStatus())) {
+                            orderList.add(order);
+                        }
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

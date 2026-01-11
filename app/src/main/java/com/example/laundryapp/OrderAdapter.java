@@ -39,7 +39,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.price.setText(order.price + " Tk");
         holder.status.setText("Status: " + order.status);
 
-
         holder.itemView.setOnLongClickListener(v -> {
             showStatusDialog(order);
             return true;
@@ -47,24 +46,27 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     private void showStatusDialog(OrderHelper order) {
-        String[] options = {"Pending", "Washing", "Ironing", "Ready", "Delivered"};
+        String[] options = {"Active", "Washing", "Ironing", "Ready", "Delivered"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Update Status for " + order.name);
         builder.setItems(options, (dialog, which) -> {
             String newStatus = options[which];
-
             FirebaseDatabase.getInstance().getReference("orders")
-                    .child(order.orderId).child("status").setValue(newStatus);
+                    .child(order.phone)
+                    .child(order.orderId)
+                    .child("status").setValue(newStatus);
 
             Toast.makeText(context, "Status Updated to " + newStatus, Toast.LENGTH_SHORT).show();
         });
         builder.show();
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
+
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView name, phone, details, price, status;
 

@@ -9,7 +9,29 @@ public class OrderHelper {
     public String price;
 
     public OrderHelper() { }
+    public String getStatus() {
+        return status;
+    }
 
+    public String getUserName() {
+        return name;
+    }
+
+    public String getUserPhone() {
+        return phone;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public String getTotalPrice() {
+        return price;
+    }
     public OrderHelper(String orderId, String name, String phone, String details, String status, String price) {
         this.orderId = orderId;
         this.name = name;

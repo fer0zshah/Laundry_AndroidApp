@@ -1,7 +1,10 @@
 package com.example.laundryapp;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,8 +27,7 @@ public class place_order extends AppCompatActivity {
     RadioButton rbWashIron, rbDryClean;
 
     DatabaseReference databaseOrders;
-    String userPhone,userName;
-
+    String userPhone, userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class place_order extends AppCompatActivity {
 
         userPhone = getIntent().getStringExtra("USER_PHONE");
         userName = getIntent().getStringExtra("USER_NAME");
+
         spinnerClothType = findViewById(R.id.spinnerClothType);
         etQuantity = findViewById(R.id.etQuantity);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
@@ -47,7 +50,60 @@ public class place_order extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         spinnerClothType.setAdapter(adapter);
 
+
+        etQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateTotal();
+            }
+        });
+
+        spinnerClothType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                calculateTotal(); // Run math when item changes
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        rbWashIron.setOnClickListener(v -> calculateTotal());
+        rbDryClean.setOnClickListener(v -> calculateTotal());
+
         btnPlaceOrder.setOnClickListener(v -> submitOrder());
+    }
+
+    private void calculateTotal() {
+        String qtyStr = etQuantity.getText().toString().trim();
+        int quantity = 0;
+        if (!qtyStr.isEmpty()) {
+            try {
+                quantity = Integer.parseInt(qtyStr);
+            } catch (NumberFormatException e) {
+                quantity = 0;
+            }
+        }
+
+        int unitPrice = 0;
+        String selectedItem = spinnerClothType.getSelectedItem().toString();
+
+        if (selectedItem.equals("Shirt")) unitPrice = 5;
+        else if (selectedItem.equals("Jeans")) unitPrice = 10;
+        else if (selectedItem.equals("Suit")) unitPrice = 50;
+        else if (selectedItem.equals("Bed Sheet")) unitPrice = 10;
+        else if (selectedItem.equals("Jacket")) unitPrice = 15;
+        else if (selectedItem.equals("T-Shirt")) unitPrice = 5;
+
+        if (rbDryClean.isChecked()) {
+            unitPrice += 5;
+        }
+        int total = unitPrice * quantity;
+
+        tvTotalPrice.setText(total + " tk");
     }
 
     private void submitOrder() {
@@ -57,30 +113,16 @@ public class place_order extends AppCompatActivity {
             return;
         }
 
+        String totalStr = tvTotalPrice.getText().toString();
+
         int quantity = Integer.parseInt(qtyStr);
         String selectedItem = spinnerClothType.getSelectedItem().toString();
-
-        int unitPrice = 0;
-        if (selectedItem.equals("Shirt")) unitPrice = 5;
-        else if (selectedItem.equals("Jeans")) unitPrice = 10;
-        else if (selectedItem.equals("Suit")) unitPrice = 50;
-        else if (selectedItem.equals("Bed Sheet")) unitPrice = 10;
-        else if (selectedItem.equals("Jacket")) unitPrice = 15;
-        else if(selectedItem.equals("T-Shirt")) unitPrice = 5;
-
-
-        if (rbDryClean.isChecked()) {
-            unitPrice += 5;
-        }
-
-        int total = unitPrice * quantity;
-        String totalStr = total+" taka";
-
         String serviceType = rbDryClean.isChecked() ? "Dry Clean" : "Wash & Iron";
         String details = quantity + " " + selectedItem + " (" + serviceType + ")";
-        String status = "Active";
+        String status = "Pending";
 
-        String orderId = databaseOrders.push().getKey();
+
+        String orderId = databaseOrders.child(userPhone).push().getKey();
 
         OrderHelper newOrder = new OrderHelper(
                 orderId,
@@ -92,7 +134,7 @@ public class place_order extends AppCompatActivity {
         );
 
         if (orderId != null) {
-            databaseOrders.child(orderId).setValue(newOrder);
+            databaseOrders.child(userPhone).child(orderId).setValue(newOrder);
             Toast.makeText(this, "Order Placed!", Toast.LENGTH_SHORT).show();
             finish();
         }

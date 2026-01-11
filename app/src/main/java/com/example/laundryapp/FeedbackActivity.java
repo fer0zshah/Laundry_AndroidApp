@@ -31,7 +31,7 @@ public class FeedbackActivity extends AppCompatActivity {
     FeedbackAdapter adapter;
 
     String userPhone;
-    String userName; // Variable for Name
+    String userName;
     boolean isAdmin = false;
 
     @Override
@@ -44,7 +44,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
         if(userName == null) userName = "Anonymous";
 
-        // Admin Check
+
         if("Admin".equalsIgnoreCase(userPhone)) {
             isAdmin = true;
         }
@@ -74,7 +74,6 @@ public class FeedbackActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(msg)) {
             String id = databaseFeedback.push().getKey();
 
-            // 2. SAVE NAME TO DATABASE
             FeedbackHelper newFeedback = new FeedbackHelper(id, userName, userPhone, msg);
 
             databaseFeedback.child(id).setValue(newFeedback);
