@@ -54,7 +54,8 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if (id == R.id.nav_revenue) {
-                Toast.makeText(this, "Revenue Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminActivity.this, RevenueActivity.class);
+                startActivity(intent);
             }
             else if (id == R.id.nav_feedback) {
                 // You can link FeedbackActivity here later

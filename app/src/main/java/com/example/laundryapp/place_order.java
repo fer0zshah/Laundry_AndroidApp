@@ -65,7 +65,7 @@ public class place_order extends AppCompatActivity {
         spinnerClothType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                calculateTotal(); // Run math when item changes
+                calculateTotal();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -113,7 +113,7 @@ public class place_order extends AppCompatActivity {
             return;
         }
 
-        String totalStr = tvTotalPrice.getText().toString();
+        String totalStr = tvTotalPrice.getText().toString().replace(" tk", "").trim();
 
         int quantity = Integer.parseInt(qtyStr);
         String selectedItem = spinnerClothType.getSelectedItem().toString();

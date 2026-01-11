@@ -33,10 +33,10 @@
                 android:id="@+id/tvOrderPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="150 Tk"
+                android:text="150 "
+                android:textColor="#27ae60"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#27ae60"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
