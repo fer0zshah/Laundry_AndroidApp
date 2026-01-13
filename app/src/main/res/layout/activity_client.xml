@@ -16,11 +16,11 @@
             android:id="@+id/tvWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:text="Welcome!"
+            android:textColor="#7A6D4A"
             android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="#2a5082"
-            android:layout_marginBottom="30dp"/>
+            android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardNewOrder"
@@ -47,9 +47,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Place New Order"
+                    android:textColor="#7A6D4A"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#1565C0"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

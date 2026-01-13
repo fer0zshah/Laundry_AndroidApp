@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="Make Your Life Easy"
-        android:textColor="#2a5082"
-        android:textSize="32sp"
+        android:textColor="#AD6C27"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <EditText
@@ -40,11 +40,11 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#7A6D4A"
         android:text="LOGIN"
-        android:textSize="18sp"
-        android:backgroundTint="#EDB409"
         android:textColor="#ffffff"
-        android:layout_marginBottom="15dp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvRegister"

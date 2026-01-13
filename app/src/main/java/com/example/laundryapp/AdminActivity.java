@@ -89,8 +89,17 @@ public class AdminActivity extends AppCompatActivity {
                     for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
                         OrderHelper order = orderSnapshot.getValue(OrderHelper.class);
 
-                        if (order != null && "Active".equals(order.getStatus())) {
-                            orderList.add(order);
+                        if (order != null) {
+                            String status = order.getStatus();
+
+                            // We now check for ALL "In Progress" statuses
+                            if (status.equals("Active") ||
+                                    status.equals("Washing") ||
+                                    status.equals("Ironing") ||
+                                    status.equals("Ready")) {
+
+                                orderList.add(order);
+                            }
                         }
                     }
                 }

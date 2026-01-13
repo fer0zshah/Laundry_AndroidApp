@@ -10,11 +10,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:text="Create Account"
+        android:textColor="#7A6D4A"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#EFB506"
-        android:layout_marginBottom="30dp"/>
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etRegName"
@@ -60,11 +60,11 @@
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#7A6D4A"
         android:text="REGISTER"
-        android:textSize="18sp"
-        android:backgroundTint="#E4B608"
         android:textColor="#ffffff"
-        android:layout_marginBottom="15dp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvLoginLink"

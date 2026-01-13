@@ -8,12 +8,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Community Feedback"
+        android:background="#7A6D4A"
         android:padding="15dp"
-        android:background="#FFC200"
+        android:text="Community Feedback"
         android:textColor="#FFF"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerFeedback"
@@ -43,8 +43,8 @@
             android:id="@+id/btnSubmitFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POST"
-            android:backgroundTint="#2a5082"/>
+            android:backgroundTint="#7A6D4A"
+            android:text="POST" />
     </LinearLayout>
 
 </LinearLayout>

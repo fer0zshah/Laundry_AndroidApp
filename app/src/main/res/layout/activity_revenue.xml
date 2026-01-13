@@ -4,29 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F7FA"> <androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardElevation="8dp"
-    app:cardBackgroundColor="#FFD400"
-    android:layout_marginBottom="5dp">
+    android:background="#F5F7FA">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Revenue Overview"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05"/>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+        android:layout_marginBottom="5dp"
+        app:cardBackgroundColor="#7A6D4A"
+        app:cardElevation="8dp"/>
 
     <ScrollView
         android:layout_width="match_parent"

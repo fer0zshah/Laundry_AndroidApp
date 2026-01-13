@@ -14,10 +14,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFE400"
+            android:background="#7A6D4A"
+            app:navigationIcon="@drawable/ic_menu_white"
             app:title="Active Orders"
-            app:titleTextColor="#ffffff"
-            app:navigationIcon="@drawable/ic_menu_white"/>
+            app:titleTextColor="#ffffff" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewOrders"
             android:layout_width="match_parent"

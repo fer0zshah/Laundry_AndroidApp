@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#7A6D4A"
         android:orientation="vertical"
         android:padding="15dp">
 
@@ -16,56 +17,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Order #12345"
-            android:textStyle="bold"
-            android:textColor="#555"/>
+            android:textColor="#555"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCustomerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Customer: Md Feroz"
+            android:textColor="#000"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#000"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvOrderDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2 T-Shirts (Dry Clean)"
             android:layout_marginTop="5dp"
-            android:textSize="16sp"/>
+            android:text="2 T-Shirts (Dry Clean)"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvOrderTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Total: 50tk"
             android:textColor="#00796B"
-            android:textStyle="bold"
-            android:layout_marginTop="5dp"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp"
-            android:gravity="end">
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnReject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reject"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="#D32F2F"
-                android:layout_marginEnd="10dp"/>
+                android:text="Reject" />
 
             <Button
                 android:id="@+id/btnAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accept"
-                android:backgroundTint="#388E3C"/>
+                android:backgroundTint="#388E3C"
+                android:text="Accept" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
