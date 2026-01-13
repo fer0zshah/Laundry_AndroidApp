@@ -73,11 +73,11 @@ public class Client extends AppCompatActivity {
         builder.setTitle("Laundry Price List");
         builder.setMessage(
                 "T-Shirt: 5tk\n" +
-                        "Jeans: 10tk\n" +
-                        "Shirt: 10\n" +
-                        "Jacket: 15\n" +
-                        "Bed Sheet: 10\n" +
-                        "Suit: 50\n"
+                        "Jeans: 10 tk\n" +
+                        "Shirt: 10 tk\n" +
+                        "Jacket: 15 tk\n" +
+                        "Bed Sheet: 10 tk\n" +
+                        "Suit: 50 tk\n"
 
 
         );

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Community Feedback"
         android:padding="15dp"
-        android:background="#2a5082"
+        android:background="#FFC200"
         android:textColor="#FFF"
         android:textSize="20sp"
         android:textStyle="bold"/>

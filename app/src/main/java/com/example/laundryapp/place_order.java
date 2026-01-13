@@ -1,10 +1,7 @@
 package com.example.laundryapp;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,12 +19,17 @@ public class place_order extends AppCompatActivity {
 
     Spinner spinnerClothType;
     EditText etQuantity;
-    TextView tvTotalPrice;
-    Button btnPlaceOrder;
+    TextView tvTotalPrice, tvCartList;
+    Button btnPlaceOrder, btnAddItem;
     RadioButton rbWashIron, rbDryClean;
 
     DatabaseReference databaseOrders;
     String userPhone, userName;
+
+    // Global variables to store the running order
+    int grandTotal = 0;
+    StringBuilder orderDetailsBuilder = new StringBuilder();
+    boolean isCartEmpty = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,9 @@ public class place_order extends AppCompatActivity {
         spinnerClothType = findViewById(R.id.spinnerClothType);
         etQuantity = findViewById(R.id.etQuantity);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
+        tvCartList = findViewById(R.id.tvCartList); // New View
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
+        btnAddItem = findViewById(R.id.btnAddItem); // New Button
         rbWashIron = findViewById(R.id.rbWashIron);
         rbDryClean = findViewById(R.id.rbDryClean);
 
@@ -51,42 +55,25 @@ public class place_order extends AppCompatActivity {
         spinnerClothType.setAdapter(adapter);
 
 
-        etQuantity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                calculateTotal();
-            }
-        });
+        btnAddItem.setOnClickListener(v -> addToCart());
 
-        spinnerClothType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                calculateTotal();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        rbWashIron.setOnClickListener(v -> calculateTotal());
-        rbDryClean.setOnClickListener(v -> calculateTotal());
 
         btnPlaceOrder.setOnClickListener(v -> submitOrder());
     }
 
-    private void calculateTotal() {
+    private void addToCart() {
         String qtyStr = etQuantity.getText().toString().trim();
-        int quantity = 0;
-        if (!qtyStr.isEmpty()) {
-            try {
-                quantity = Integer.parseInt(qtyStr);
-            } catch (NumberFormatException e) {
-                quantity = 0;
-            }
+        if (qtyStr.isEmpty()) {
+            Toast.makeText(this, "Enter quantity first", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        int quantity = Integer.parseInt(qtyStr);
+        if (quantity <= 0) {
+            Toast.makeText(this, "Quantity must be > 0", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         int unitPrice = 0;
         String selectedItem = spinnerClothType.getSelectedItem().toString();
@@ -98,47 +85,66 @@ public class place_order extends AppCompatActivity {
         else if (selectedItem.equals("Jacket")) unitPrice = 15;
         else if (selectedItem.equals("T-Shirt")) unitPrice = 5;
 
+
+        String serviceType;
         if (rbDryClean.isChecked()) {
             unitPrice += 5;
-        }
-        int total = unitPrice * quantity;
+            serviceType = "Wash & Iron";
 
-        tvTotalPrice.setText(total + " tk");
+        } else {
+            serviceType = "Wash Only";
+        }
+
+        int itemTotal = unitPrice * quantity;
+
+
+        grandTotal += itemTotal;
+
+
+        String lineItem = quantity + " x " + selectedItem + " (" + serviceType + ") = " + itemTotal + "tk\n";
+
+        if (isCartEmpty) {
+            orderDetailsBuilder.setLength(0);
+            isCartEmpty = false;
+        }
+        orderDetailsBuilder.append(lineItem);
+
+
+        tvCartList.setText(orderDetailsBuilder.toString());
+        tvTotalPrice.setText(grandTotal + " tk");
+
+
+        etQuantity.setText("");
+        Toast.makeText(this, "Item Added!", Toast.LENGTH_SHORT).show();
     }
 
     private void submitOrder() {
-        String qtyStr = etQuantity.getText().toString().trim();
-        if (qtyStr.isEmpty()) {
-            Toast.makeText(this, "Please enter quantity", Toast.LENGTH_SHORT).show();
+        // If cart is empty, user might have forgotten to click "Add"
+        if (isCartEmpty) {
+            Toast.makeText(this, "Please add items to cart first (+)", Toast.LENGTH_SHORT).show();
             return;
         }
+
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
         String currentDate = sdf.format(new java.util.Date());
 
-        String totalStr = tvTotalPrice.getText().toString().replace(" tk", "").trim();
-
-        int quantity = Integer.parseInt(qtyStr);
-        String selectedItem = spinnerClothType.getSelectedItem().toString();
-        String serviceType = rbDryClean.isChecked() ? "Dry Clean" : "Wash & Iron";
-        String details = quantity + " " + selectedItem + " (" + serviceType + ")";
         String status = "Pending";
-
-
         String orderId = databaseOrders.child(userPhone).push().getKey();
+
 
         OrderHelper newOrder = new OrderHelper(
                 orderId,
                 userName,
                 userPhone,
-                details,
+                orderDetailsBuilder.toString(),
                 status,
-                totalStr,
+                String.valueOf(grandTotal),
                 currentDate
         );
 
         if (orderId != null) {
             databaseOrders.child(userPhone).child(orderId).setValue(newOrder);
-            Toast.makeText(this, "Order Placed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class PickupRequest extends AppCompatActivity {
         databaseOrders = FirebaseDatabase.getInstance().getReference("orders");
         orderList = new ArrayList<>();
 
-        // Load the data
+
         loadPendingOrders();
     }
 
@@ -58,6 +59,7 @@ public class PickupRequest extends AppCompatActivity {
                         }
                     }
                 }
+                Collections.reverse(orderList);
                 adapter = new PickupAdapter(orderList);
                 recyclerView.setAdapter(adapter);
             }
