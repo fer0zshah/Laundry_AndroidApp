@@ -112,6 +112,8 @@ public class place_order extends AppCompatActivity {
             Toast.makeText(this, "Please enter quantity", Toast.LENGTH_SHORT).show();
             return;
         }
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+        String currentDate = sdf.format(new java.util.Date());
 
         String totalStr = tvTotalPrice.getText().toString().replace(" tk", "").trim();
 
@@ -130,7 +132,8 @@ public class place_order extends AppCompatActivity {
                 userPhone,
                 details,
                 status,
-                totalStr
+                totalStr,
+                currentDate
         );
 
         if (orderId != null) {

@@ -20,7 +20,6 @@ public class ClientOrderAdapter extends RecyclerView.Adapter<ClientOrderAdapter.
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         return new OrderViewHolder(view);
     }
@@ -29,19 +28,46 @@ public class ClientOrderAdapter extends RecyclerView.Adapter<ClientOrderAdapter.
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderHelper order = orderList.get(position);
 
-        holder.tvName.setText("Order #" + order.orderId.substring(0,4)); // Showing ID instead of Name looks better in History
-        holder.tvPhone.setText(order.phone);
-        holder.tvPrice.setText(order.price);
-        holder.tvDetails.setText(order.details);
-        holder.tvStatus.setText("Status: " + order.status);
-
-
-        if ("Ready".equalsIgnoreCase(order.status)) {
-            holder.tvStatus.setTextColor(Color.parseColor("#27ae60")); // Green
-        } else if ("Washing".equalsIgnoreCase(order.status)) {
-            holder.tvStatus.setTextColor(Color.BLUE);
+        if (order.date != null && !order.date.isEmpty()) {
+            holder.tvDate.setText(order.date);
         } else {
-            holder.tvStatus.setTextColor(Color.parseColor("#d35400")); // Orange/Red
+            holder.tvDate.setText("No Date");
+        }
+
+        if(order.orderId != null && order.orderId.length() >= 4) {
+            holder.tvName.setText("Order #" + order.orderId.substring(0, 4));
+        } else {
+            holder.tvName.setText("Order #" + order.orderId);
+        }
+
+        holder.tvPrice.setText(order.price + " Tk");
+
+
+        holder.tvDetails.setText(order.details);
+
+        holder.tvStatus.setText(order.status);
+
+        setStatusColor(holder.tvStatus, order.status);
+    }
+
+    private void setStatusColor(TextView tv, String status) {
+        // Matches the colors used in your Admin Adapter
+        switch (status) {
+            case "Delivered":
+                tv.setTextColor(Color.parseColor("#2ECC71"));
+                break;
+            case "Active":
+                tv.setTextColor(Color.parseColor("#3498DB"));
+                break;
+            case "Washing":
+                tv.setTextColor(Color.parseColor("#F1C40F"));
+                break;
+            case "Ironing":
+                tv.setTextColor(Color.parseColor("#E67E22"));
+                break;
+            default:
+                tv.setTextColor(Color.parseColor("#7F8C8D"));
+                break;
         }
     }
 
@@ -52,16 +78,18 @@ public class ClientOrderAdapter extends RecyclerView.Adapter<ClientOrderAdapter.
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvName, tvPhone, tvPrice, tvDetails, tvStatus;
+        TextView tvName, tvDetails, tvPrice, tvStatus, tvDate;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvName = itemView.findViewById(R.id.tvOrderName);
-            tvPhone = itemView.findViewById(R.id.tvOrderPhone);
-            tvPrice = itemView.findViewById(R.id.tvOrderPrice);
             tvDetails = itemView.findViewById(R.id.tvOrderDetails);
+            tvPrice = itemView.findViewById(R.id.tvOrderPrice);
             tvStatus = itemView.findViewById(R.id.tvOrderStatus);
+            tvDate = itemView.findViewById(R.id.tvOrderDate);
+
+
         }
     }
 }

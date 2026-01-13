@@ -12,27 +12,33 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Date;
+
+
 
 public class RevenueActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    TextView tvTotalRevenue;
+    TextView tvTotalRevenue,tvToday,tvMonth,tvPending;
     OrderAdapter adapter; // reusing your existing adapter
     ArrayList<OrderHelper> list;
     DatabaseReference database;
-    int totalIncome = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_revenue);
-
+        tvToday = findViewById(R.id.tvTodayRevenue);
+        tvMonth = findViewById(R.id.tvMonthRevenue);
+        tvPending = findViewById(R.id.tvPendingRevenue);
         tvTotalRevenue = findViewById(R.id.tvTotalRevenue);
         recyclerView = findViewById(R.id.recyclerRevenue);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         list = new ArrayList<>();
-        // We reuse your OrderAdapter because it already designs the rows nicely
         adapter = new OrderAdapter(this, list);
         recyclerView.setAdapter(adapter);
 
@@ -45,28 +51,49 @@ public class RevenueActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                totalIncome = 0;
+                int incomeToday=0;
+                int incomeMonth=0;
+                int incomePending=0;
+                int incomeTotal=0;
+                String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-                // Loop through all Users
+                String thisMonth = todayDate.substring(0, 7);
+
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    // Loop through all Orders for that user
                     for (DataSnapshot orderSnapshot : userSnapshot.getChildren()) {
                         OrderHelper order = orderSnapshot.getValue(OrderHelper.class);
 
-                        // Check if order exists AND is Delivered
-                        if (order != null && "Delivered".equals(order.getStatus())) {
-                            list.add(order);
-
-                            // Calculate Money: Convert "50 taka" to integer 50
+                        if (order != null) {
                             int price = extractPrice(order.getTotalPrice());
-                            totalIncome += price;
+                            String orderDate = order.getDate();
+
+                            if (!"Delivered".equals(order.getStatus())) {
+                                incomePending += price;
+                            }
+                            else {
+                                list.add(order);
+
+                                incomeTotal += price;
+
+                                if (orderDate != null) {
+
+                                    if (orderDate.equals(todayDate)) {
+                                        incomeToday += price;
+                                    }
+                                    if (orderDate.startsWith(thisMonth)) {
+                                        incomeMonth += price;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
-                // Update UI
                 adapter.notifyDataSetChanged();
-                tvTotalRevenue.setText(totalIncome + " Tk");
+                tvTotalRevenue.setText(incomeTotal + " Tk");
+                tvToday.setText(incomeToday + " Tk");
+                tvMonth.setText(incomeMonth + " Tk");
+                tvPending.setText(incomePending + " Tk");
             }
 
             @Override
@@ -74,10 +101,8 @@ public class RevenueActivity extends AppCompatActivity {
         });
     }
 
-    // Helper function to turn "15 taka" into 15
     private int extractPrice(String priceString) {
         if (priceString == null) return 0;
-        // Replace everything that is NOT a number (0-9) with empty space
         String numberOnly = priceString.replaceAll("[^0-9]", "");
         if (numberOnly.isEmpty()) return 0;
         return Integer.parseInt(numberOnly);

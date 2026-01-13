@@ -46,10 +46,8 @@ public class AdminActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
-            if (id == R.id.nav_active) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
-            else if (id == R.id.nav_pickup) {
+
+          if (id == R.id.nav_pickup) {
                 Intent intent = new Intent(AdminActivity.this, PickupRequest.class);
                 startActivity(intent);
             }
@@ -58,11 +56,14 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if (id == R.id.nav_feedback) {
-                // You can link FeedbackActivity here later
-                Toast.makeText(this, "Feedback Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminActivity.this, FeedbackActivity.class);
+                intent.putExtra("USER_PHONE", "Admin");
+                intent.putExtra("USER_NAME", "Administrator");
+                startActivity(intent);
             }
             else if (id == R.id.nav_logout) {
-                finish();
+                Intent intent = new Intent(AdminActivity.this, MainActivity.class);
+                startActivity(intent);
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);

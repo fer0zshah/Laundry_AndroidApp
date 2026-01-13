@@ -44,33 +44,34 @@ public class ClientHistory extends AppCompatActivity {
     }
 
     private void loadMyOrders() {
+        DatabaseReference myOrdersRef = databaseOrders.child(userPhone);
 
-        databaseOrders.orderByChild("phone").equalTo(userPhone)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        myOrderList.clear();
+        myOrdersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                myOrderList.clear();
 
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            OrderHelper order = data.getValue(OrderHelper.class);
-                            if (order != null) {
-                                myOrderList.add(order);
-                            }
-                        }
-
-                        java.util.Collections.reverse(myOrderList);
-
-                        adapter.notifyDataSetChanged();
-
-                        if (myOrderList.isEmpty()) {
-                            Toast.makeText(ClientHistory.this, "No orders found.", Toast.LENGTH_SHORT).show();
-                        }
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                    OrderHelper order = orderSnapshot.getValue(OrderHelper.class);
+                    if (order != null) {
+                        myOrderList.add(order);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(ClientHistory.this, "Error loading data", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                java.util.Collections.reverse(myOrderList);
+
+                adapter.notifyDataSetChanged();
+
+                if (myOrderList.isEmpty()) {
+                    Toast.makeText(ClientHistory.this, "No orders found.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ClientHistory.this, "Error loading data", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.example.laundryapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +34,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderHelper order = list.get(position);
-        holder.name.setText(order.name);
-        holder.phone.setText(order.phone);
-        holder.details.setText(order.details);
-        holder.price.setText(order.price + " Tk");
-        holder.status.setText("Status: " + order.status);
+
+        String nameAndPhone = order.name + " (" + order.phone + ")";
+        holder.tvName.setText(nameAndPhone);
+        holder.tvDetails.setText(order.details);
+        holder.tvPrice.setText(order.price + " Tk");
+
+        if (order.date != null && !order.date.isEmpty()) {
+            holder.tvDate.setText(order.date);
+        } else {
+            holder.tvDate.setText("No Date");
+        }
+
+
+        holder.tvStatus.setText(order.status);
+        setStatusColor(holder.tvStatus, order.status);
 
         holder.itemView.setOnLongClickListener(v -> {
             showStatusDialog(order);
@@ -45,15 +56,36 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         });
     }
 
+
+    private void setStatusColor(TextView tv, String status) {
+        switch (status) {
+            case "Delivered":
+                tv.setTextColor(Color.parseColor("#2ECC71"));
+                break;
+            case "Active":
+                tv.setTextColor(Color.parseColor("#3498DB"));
+                break;
+            case "Washing":
+                tv.setTextColor(Color.parseColor("#F1C40F"));
+                break;
+            case "Ironing":
+                tv.setTextColor(Color.parseColor("#E67E22"));
+                break;
+            default:
+                tv.setTextColor(Color.parseColor("#7F8C8D"));
+                break;
+        }
+    }
+
     private void showStatusDialog(OrderHelper order) {
         String[] options = {"Active", "Washing", "Ironing", "Ready", "Delivered"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Update Status for " + order.name);
+        builder.setTitle("Update Status");
         builder.setItems(options, (dialog, which) -> {
             String newStatus = options[which];
             FirebaseDatabase.getInstance().getReference("orders")
-                    .child(order.phone)
+                    .child(order.phone) // Ensure this matches your DB structure
                     .child(order.orderId)
                     .child("status").setValue(newStatus);
 
@@ -68,15 +100,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView name, phone, details, price, status;
+
+        TextView tvName, tvDetails, tvPrice, tvStatus, tvDate;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tvOrderName);
-            phone = itemView.findViewById(R.id.tvOrderPhone);
-            details = itemView.findViewById(R.id.tvOrderDetails);
-            price = itemView.findViewById(R.id.tvOrderPrice);
-            status = itemView.findViewById(R.id.tvOrderStatus);
+
+            tvName = itemView.findViewById(R.id.tvOrderName);
+            tvDetails = itemView.findViewById(R.id.tvOrderDetails);
+            tvPrice = itemView.findViewById(R.id.tvOrderPrice);
+            tvStatus = itemView.findViewById(R.id.tvOrderStatus);
+            tvDate = itemView.findViewById(R.id.tvOrderDate);
         }
     }
 }

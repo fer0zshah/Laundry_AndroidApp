@@ -55,6 +55,11 @@ public class FeedbackActivity extends AppCompatActivity {
         etMessage = findViewById(R.id.etFeedbackMessage);
         btnSubmit = findViewById(R.id.btnSubmitFeedback);
 
+        if (isAdmin) {
+            etMessage.setVisibility(android.view.View.GONE);
+            btnSubmit.setVisibility(android.view.View.GONE);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         feedbackList = new ArrayList<>();
 
